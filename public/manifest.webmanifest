@@ -1,0 +1,25 @@
+{
+  "name": "Kids Tracing Game",
+  "short_name": "Tracing",
+  "description": "An educational hand-tracing game for kids",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff7e6",
+  "theme_color": "#f39c12",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icons/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
