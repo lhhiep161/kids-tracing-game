@@ -8,6 +8,7 @@ interface TracingBoardProps {
   level: TracingLevel;
   onStrokeComplete: (strokeOrder: number) => void;
   onLevelComplete: () => void;
+  onStrokeRetry?: () => void;
   onStrokeProgress?: (strokeNumber: number) => void;
 }
 
@@ -26,6 +27,7 @@ export default function TracingBoard({
   onStrokeComplete,
   onLevelComplete,
   onStrokeProgress,
+  onStrokeRetry,
 }: TracingBoardProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -187,6 +189,7 @@ export default function TracingBoard({
     if (finalPath.length < 5) {
       playSfx(AUDIO_PATHS.sfx.wrong, 0.45);
       setHint('Bé hãy kéo theo đường chấm nhé!');
+      onStrokeRetry?.();
       setCurrentPath([]);
       return;
     }
@@ -194,6 +197,7 @@ export default function TracingBoard({
     if (endDistance > startEndTolerance) {
       playSfx(AUDIO_PATHS.sfx.wrong, 0.45);
       setHint('Chưa tới được chấm đỏ cuối cùng. Cố gắng lại nhé!');
+      onStrokeRetry?.();
       setCurrentPath([]);
       return;
     }
@@ -204,6 +208,7 @@ export default function TracingBoard({
     if (!isComplete) {
       playSfx(AUDIO_PATHS.sfx.wrong, 0.45);
       setHint('Bé hãy đi sát theo đường chấm nhé!');
+      onStrokeRetry?.();
       setCurrentPath([]);
       return;
     }
