@@ -26,6 +26,11 @@ export default function TracingGame() {
   });
   const [showStickerReward, setShowStickerReward] = useState(false);
   const [currentSticker, setCurrentSticker] = useState('⭐');
+  const [showStickerCollection, setShowStickerCollection] = useState(false);
+  const [collectedStickers, setCollectedStickers] = useState<string[]>(() => {
+    const saved = localStorage.getItem('collectedStickers');
+    return saved ? JSON.parse(saved) : [];
+  });
 
   const strokeSuccessMessages = [
     'Giỏi lắm!',
@@ -55,6 +60,10 @@ export default function TracingGame() {
     setSoundEnabled(soundEnabled);
     localStorage.setItem('soundEnabled', JSON.stringify(soundEnabled));
   }, [soundEnabled]);
+
+  useEffect(() => {
+    localStorage.setItem('collectedStickers', JSON.stringify(collectedStickers));
+  }, [collectedStickers]);
 
   const handleLevelChange = (level: TracingLevel) => {
     setCurrentLevel(level);
@@ -86,8 +95,15 @@ export default function TracingGame() {
     setEncouragementMessage(getRandomMessage(levelCompleteMessages));
     setEncouragementType('success');
     // Show sticker reward
-    setCurrentSticker(stickerOptions[Math.floor(Math.random() * stickerOptions.length)]);
+    const newSticker = stickerOptions[Math.floor(Math.random() * stickerOptions.length)];
+    setCurrentSticker(newSticker);
     setShowStickerReward(true);
+    // Add to collection (avoid duplicates)
+    setCollectedStickers(prev => {
+      const uniqueStickers = new Set(prev);
+      uniqueStickers.add(newSticker);
+      return Array.from(uniqueStickers);
+    });
     setTimeout(() => setShowStickerReward(false), 2000);
     setTimeout(() => {
       const nextLevel = getNextLevel(currentLevel.id);
@@ -99,6 +115,10 @@ export default function TracingGame() {
 
   const toggleLevelSelector = () => {
     setShowLevelSelector(prev => !prev);
+  };
+
+  const toggleStickerCollection = () => {
+    setShowStickerCollection(prev => !prev);
   };
 
   const toggleSound = () => {
@@ -367,6 +387,160 @@ export default function TracingGame() {
             transform: scale(1);
           }
         }
+
+        .sticker-collection-button {
+          position: absolute;
+          top: 8px;
+          right: 56px;
+          height: 40px;
+          padding: 0 10px;
+          border: none;
+          border-radius: 20px;
+          background: rgba(255, 255, 255, 0.9);
+          color: #333;
+          font-size: 0.9rem;
+          cursor: pointer;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          transition: all 0.2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+          user-select: none;
+          -webkit-user-select: none;
+          -webkit-touch-callout: none;
+          z-index: 99;
+          white-space: nowrap;
+        }
+
+        .sticker-collection-button:hover {
+          background: rgba(255, 255, 255, 0.95);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          transform: scale(1.05);
+        }
+
+        .sticker-collection-button:active {
+          transform: scale(0.95);
+        }
+
+        @media (max-width: 600px) {
+          .sticker-collection-button {
+            right: 52px;
+            padding: 0 8px;
+            font-size: 0.85rem;
+          }
+        }
+
+        .sticker-collection-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.5);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 200;
+          pointer-events: auto;
+          animation: fadeIn 0.2s ease-out;
+        }
+
+        .sticker-collection-panel {
+          position: relative;
+          background: white;
+          border-radius: 20px;
+          padding: 20px;
+          max-width: min(90vw, 400px);
+          max-height: 80svh;
+          overflow-y: auto;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+          animation: panelSlideUp 0.3s ease-out;
+        }
+
+        .sticker-panel-close {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          width: 32px;
+          height: 32px;
+          border: none;
+          background: rgba(0, 0, 0, 0.1);
+          color: #333;
+          font-size: 1.2rem;
+          border-radius: 50%;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .sticker-panel-close:hover {
+          background: rgba(0, 0, 0, 0.2);
+          transform: scale(1.1);
+        }
+
+        .sticker-panel-title {
+          margin: 0 0 16px 0;
+          font-size: 1.5rem;
+          color: #333;
+          text-align: center;
+          font-weight: bold;
+        }
+
+        .sticker-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+          gap: 8px;
+          padding: 8px 0;
+        }
+
+        .sticker-grid-item {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 2.5rem;
+          padding: 8px;
+          background: rgba(255, 215, 0, 0.1);
+          border-radius: 12px;
+          border: 2px solid rgba(255, 215, 0, 0.3);
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .sticker-grid-item:hover {
+          transform: scale(1.15);
+          background: rgba(255, 215, 0, 0.2);
+          border-color: rgba(255, 215, 0, 0.6);
+        }
+
+        .sticker-empty {
+          text-align: center;
+          color: #999;
+          font-size: 1rem;
+          padding: 32px 16px;
+        }
+
+        @keyframes fadeIn {
+          0% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+
+        @keyframes panelSlideUp {
+          0% {
+            transform: translateY(20px);
+            opacity: 0;
+          }
+          100% {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
       `}</style>
 
       <button
@@ -378,7 +552,42 @@ export default function TracingGame() {
         {soundEnabled ? '🔊' : '🔇'}
       </button>
 
+      <button
+        className="sticker-collection-button"
+        onClick={toggleStickerCollection}
+        title="Xem bộ sưu tập sticker"
+        aria-label="Xem bộ sưu tập sticker"
+      >
+        🎒 {collectedStickers.length}
+      </button>
+
       <UserHeader user={currentUser} />
+
+      {showStickerCollection && (
+        <div className="sticker-collection-overlay" aria-hidden="true">
+          <div className="sticker-collection-panel">
+            <button
+              className="sticker-panel-close"
+              onClick={toggleStickerCollection}
+              aria-label="Đóng"
+            >
+              ✕
+            </button>
+            <h2 className="sticker-panel-title">Bộ Sưu Tập Sticker</h2>
+            {collectedStickers.length > 0 ? (
+              <div className="sticker-grid">
+                {collectedStickers.map((sticker, index) => (
+                  <div key={index} className="sticker-grid-item">
+                    {sticker}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="sticker-empty">Chưa có sticker nào</div>
+            )}
+          </div>
+        </div>
+      )}
 
       {showStickerReward && (
         <div className="sticker-reward" aria-hidden="true">
