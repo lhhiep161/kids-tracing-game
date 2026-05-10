@@ -79,6 +79,7 @@ export default function StrokeRenderer({
               fill={isCompleted ? '#4CAF50' : '#d9272e'}
               stroke="#ffffff"
               strokeWidth={3}
+              className={isCurrent && !isCompleted ? 'current-start-point' : undefined}
             />
             <circle
               cx={stroke.endPoint.x}
