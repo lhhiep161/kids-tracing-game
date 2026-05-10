@@ -122,6 +122,40 @@
   pointer-events: none;
 }
 
+.current-drawing-glow {
+  stroke: #ffb997;
+  stroke-width: 24;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: url(#drawingGlow);
+  opacity: 0.45;
+}
+
+.current-drawing-main {
+  stroke: #ff5722;
+  stroke-width: 16;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 10px rgba(255, 87, 34, 0.3));
+}
+
+.completed-path-glow {
+  stroke: #98e1aa;
+  stroke-width: 24;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: url(#completedGlow);
+  opacity: 0.35;
+}
+
+.completed-path-main {
+  stroke: #4caf50;
+  stroke-width: 16;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.95;
+}
+
 .current-start-point {
   animation: breatheStart 2.2s ease-in-out infinite;
   transform-origin: center center;

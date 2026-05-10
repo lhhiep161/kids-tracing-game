@@ -51,17 +51,18 @@ export default function StrokeRenderer({
       })}
 
       {Object.entries(userPaths).map(([strokeOrder, path]) => (
-        <path
-          key={`user-${strokeOrder}`}
-          d={path}
-          fill="none"
-          stroke="#4CAF50"
-          strokeWidth={18}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          opacity={0.9}
-          pointerEvents="none"
-        />
+        <g key={`user-${strokeOrder}`} pointerEvents="none">
+          <path
+            d={path}
+            fill="none"
+            className="completed-path-glow"
+          />
+          <path
+            d={path}
+            fill="none"
+            className="completed-path-main"
+          />
+        </g>
       ))}
 
       {strokes.map((stroke, index) => {

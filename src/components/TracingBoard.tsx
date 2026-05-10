@@ -281,6 +281,23 @@ export default function TracingBoard({
         onLostPointerCapture={handlePointerCancel}
         onContextMenu={(e) => e.preventDefault()}
       >
+        <defs>
+          <filter id="drawingGlow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <filter id="completedGlow" x="-70%" y="-70%" width="240%" height="240%">
+            <feGaussianBlur stdDeviation="5" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
         <StrokeRenderer
           strokes={level.strokes}
           currentStrokeIndex={currentStrokeIndex}
@@ -289,15 +306,20 @@ export default function TracingBoard({
         />
 
         {isDrawing && currentPath.length > 1 && (
-          <path
-            d={pointsToPath(currentPath)}
-            fill="none"
-            stroke="#FF5722"
-            strokeWidth="18"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            pointerEvents="none"
-          />
+          <>
+            <path
+              d={pointsToPath(currentPath)}
+              fill="none"
+              className="current-drawing-glow"
+              pointerEvents="none"
+            />
+            <path
+              d={pointsToPath(currentPath)}
+              fill="none"
+              className="current-drawing-main"
+              pointerEvents="none"
+            />
+          </>
         )}
       </svg>
 
