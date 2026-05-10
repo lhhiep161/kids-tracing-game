@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: flex-start;
   background: linear-gradient(135deg, #fef5e7 0%, #fdebd0 100%);
-  padding: 6px;
+  padding: 6px 8px;
   font-family: 'Arial', sans-serif;
   touch-action: none;
   overscroll-behavior: none;
@@ -51,22 +51,22 @@
 
 .action-buttons {
   display: flex;
-  gap: 15px;
+  gap: 10px;
   justify-content: center;
   margin-top: 10px;
 }
 
 .level-select-button {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: bold;
-  padding: 12px 25px;
+  padding: 10px 18px;
   border: none;
-  border-radius: 25px;
+  border-radius: 22px;
   background: linear-gradient(135deg, #3498db, #2980b9);
   color: white;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+  transition: all 0.2s ease;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;

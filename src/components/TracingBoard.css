@@ -1,6 +1,6 @@
 .tracing-board {
   width: min(94vw, 520px);
-  height: calc(100svh - 158px);
+  height: calc(100svh - 140px);
   min-height: 0;
   overflow: hidden;
   box-sizing: border-box;
@@ -10,7 +10,7 @@
   align-items: center;
   gap: 8px;
 
-  padding: 10px;
+  padding: 10px 8px;
 }
 
 .level-info {
@@ -37,7 +37,7 @@
 .canvas {
   width: min(92vw, 500px);
   max-width: 500px;
-  height: clamp(260px, 48svh, 390px);
+  height: clamp(280px, 50svh, 390px);
   aspect-ratio: 5 / 4;
   flex-shrink: 0;
   background: white;
@@ -50,23 +50,23 @@
 
 .board-controls {
   display: flex;
-  gap: 15px;
+  gap: 10px;
   justify-content: center;
   flex-shrink: 0;
   margin-top: 0;
 }
 
 .reset-button {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: bold;
-  padding: 9px 20px;
+  padding: 8px 16px;
   border: none;
-  border-radius: 25px;
+  border-radius: 22px;
   background: linear-gradient(135deg, #f39c12, #e67e22);
   color: white;
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
