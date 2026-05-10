@@ -34,6 +34,7 @@ export default function TracingBoard({
   const [userPaths, setUserPaths] = useState<{ [strokeOrder: number]: string }>({});
   const [currentPath, setCurrentPath] = useState<Point[]>([]);
   const [hint, setHint] = useState('Hãy bắt đầu từ chấm đỏ nhé!');
+  const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
 
   const currentStroke = level.strokes[currentStrokeIndex];
 
@@ -243,6 +244,16 @@ export default function TracingBoard({
     }
   }, [currentStrokeIndex, onStrokeProgress]);
 
+  useEffect(() => {
+    if (completedStrokes.length === level.strokes.length && completedStrokes.length > 0) {
+      setShowSuccessOverlay(true);
+      const timer = setTimeout(() => {
+        setShowSuccessOverlay(false);
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [completedStrokes, level.strokes.length]);
+
   const handleReset = () => {
     setCurrentStrokeIndex(0);
     setCompletedStrokes([]);
@@ -292,6 +303,12 @@ export default function TracingBoard({
           🔄 Làm lại
         </button>
       </div>
+
+      {showSuccessOverlay && (
+        <div className="success-overlay">
+          <div className="success-message">Hoàn thành!</div>
+        </div>
+      )}
     </div>
   );
 }
