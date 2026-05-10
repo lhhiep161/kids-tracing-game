@@ -24,6 +24,8 @@ export default function TracingGame() {
     const saved = localStorage.getItem('soundEnabled');
     return saved !== null ? JSON.parse(saved) : true;
   });
+  const [showStickerReward, setShowStickerReward] = useState(false);
+  const [currentSticker, setCurrentSticker] = useState('⭐');
 
   const strokeSuccessMessages = [
     'Giỏi lắm!',
@@ -42,6 +44,8 @@ export default function TracingGame() {
     'Gần đúng rồi!',
     'Đi tiếp nào!',
   ];
+
+  const stickerOptions = ['⭐', '🌈', '🐝', '🐣', '🚗', '🎈', '🏆'];
 
   const getRandomMessage = (messages: string[]) => {
     return messages[Math.floor(Math.random() * messages.length)];
@@ -81,6 +85,10 @@ export default function TracingGame() {
     setMascotState('cheering');
     setEncouragementMessage(getRandomMessage(levelCompleteMessages));
     setEncouragementType('success');
+    // Show sticker reward
+    setCurrentSticker(stickerOptions[Math.floor(Math.random() * stickerOptions.length)]);
+    setShowStickerReward(true);
+    setTimeout(() => setShowStickerReward(false), 2000);
     setTimeout(() => {
       const nextLevel = getNextLevel(currentLevel.id);
       if (nextLevel) {
@@ -298,6 +306,67 @@ export default function TracingGame() {
             width: min(100%, 260px);
           }
         }
+
+        .sticker-reward {
+          position: absolute;
+          top: 60px;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 4px;
+          animation: stickerPop 2s ease-out forwards;
+          z-index: 110;
+          max-width: min(90vw, 360px);
+        }
+
+        .sticker-emoji {
+          font-size: 2.5rem;
+          animation: stickerBounce 0.6s ease-out;
+        }
+
+        .sticker-text {
+          font-size: 0.75rem;
+          color: #2d5a3d;
+          background: rgba(255, 255, 255, 0.95);
+          padding: 4px 8px;
+          border-radius: 12px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          white-space: nowrap;
+          font-weight: bold;
+        }
+
+        @keyframes stickerPop {
+          0% {
+            opacity: 0;
+            transform: scale(0.3) translateY(20px);
+          }
+          20% {
+            opacity: 1;
+            transform: scale(1.1) translateY(-5px);
+          }
+          80% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+          }
+          100% {
+            opacity: 0;
+            transform: scale(0.8) translateY(-10px);
+          }
+        }
+
+        @keyframes stickerBounce {
+          0% {
+            transform: scale(0.8);
+          }
+          50% {
+            transform: scale(1.2);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
       `}</style>
 
       <button
@@ -310,6 +379,13 @@ export default function TracingGame() {
       </button>
 
       <UserHeader user={currentUser} />
+
+      {showStickerReward && (
+        <div className="sticker-reward" aria-hidden="true">
+          <div className="sticker-emoji">{currentSticker}</div>
+          <div className="sticker-text">Bé nhận được sticker!</div>
+        </div>
+      )}
 
       <Navigation
         currentLevel={currentLevel}

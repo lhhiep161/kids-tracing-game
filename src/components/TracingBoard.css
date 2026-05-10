@@ -302,12 +302,31 @@
   animation: fadeInOut 1.5s ease-in-out;
 }
 
-.success-message {
-  font-size: clamp(2.5rem, 8vw, 4rem);
+.reward-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  padding: 20px 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  border: 3px solid #ffd700;
+  animation: rewardPop 0.6s cubic-bezier(0.36, 0, 0.66, 1);
+}
+
+.reward-emoji {
+  font-size: 4rem;
+  animation: rewardBounce 0.8s ease-out, rewardGlow 1.5s ease-in-out infinite alternate;
+  filter: drop-shadow(0 4px 8px rgba(255, 215, 0, 0.4));
+}
+
+.reward-text {
+  font-size: 1.5rem;
   font-weight: bold;
   color: #27ae60;
-  text-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
-  animation: popIn 0.4s cubic-bezier(0.36, 0, 0.66, 1);
+  text-shadow: 0 2px 4px rgba(39, 174, 96, 0.3);
+  animation: textPop 0.4s ease-out 0.2s both;
 }
 
 @keyframes fadeInOut {
@@ -325,7 +344,42 @@
   }
 }
 
-@keyframes popIn {
+@keyframes rewardPop {
+  0% {
+    transform: scale(0.3) rotate(-10deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1) rotate(5deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes rewardBounce {
+  0% {
+    transform: scale(0.8) translateY(10px);
+  }
+  50% {
+    transform: scale(1.2) translateY(-5px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes rewardGlow {
+  0% {
+    filter: drop-shadow(0 4px 8px rgba(255, 215, 0, 0.4));
+  }
+  100% {
+    filter: drop-shadow(0 4px 12px rgba(255, 215, 0, 0.6));
+  }
+}
+
+@keyframes textPop {
   0% {
     transform: scale(0.5);
     opacity: 0;

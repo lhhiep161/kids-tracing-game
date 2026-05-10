@@ -353,7 +353,10 @@ export default function TracingBoard({
 
       {showSuccessOverlay && (
         <div className="success-overlay">
-          <div className="success-message">Hoàn thành!</div>
+          <div className="reward-card">
+            <div className="reward-emoji">🏆</div>
+            <div className="reward-text">Giỏi lắm!</div>
+          </div>
         </div>
       )}
     </div>
