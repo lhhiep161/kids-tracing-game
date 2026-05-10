@@ -152,7 +152,19 @@ export default function TracingBoard({
     if (!isDrawing || !currentStroke) return;
 
     const point = getSVGPoint(e.clientX, e.clientY);
-    setCurrentPath((prev) => [...prev, point]);
+    setCurrentPath((prev) => {
+      const lastPoint = prev[prev.length - 1];
+      if (!lastPoint) {
+        return [point];
+      }
+
+      const moveDistance = distance(point, lastPoint);
+      if (moveDistance < 3) {
+        return prev;
+      }
+
+      return [...prev, point];
+    });
   };
 
   const handlePointerUp = (e: React.PointerEvent<SVGSVGElement>) => {
