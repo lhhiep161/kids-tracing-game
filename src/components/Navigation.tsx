@@ -24,15 +24,6 @@ export default function Navigation({ currentLevel, currentStrokeNumber, onLevelC
     }
   };
 
-  const getCategoryDisplayName = (category: string) => {
-    switch (category) {
-      case 'numbers': return 'Số';
-      case 'letters': return 'Chữ';
-      case 'shapes': return 'Hình';
-      default: return category;
-    }
-  };
-
   return (
     <div className="navigation">
       <button
