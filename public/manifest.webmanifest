@@ -10,13 +10,13 @@
   "scope": "/",
   "icons": [
     {
-      "src": "/icons/app-icon.svg",
+      "src": "/icons/app-icon.png",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "/icons/app-icon.svg",
+      "src": "/icons/app-icon.png",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "maskable"
