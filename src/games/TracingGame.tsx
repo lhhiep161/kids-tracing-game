@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import UserHeader from '../components/UserHeader';
 import Navigation from '../components/Navigation';
 import LevelSelector from '../components/LevelSelector';
 import TracingBoard from '../components/TracingBoard';
 import type { TracingLevel } from '../levels';
 import { allLevels, getNextLevel } from '../levels';
+import { setSoundEnabled } from '../utils/audioManager';
 import './TracingGame.css';
 
 const currentUser = {
@@ -16,6 +17,15 @@ export default function TracingGame() {
   const [currentLevel, setCurrentLevel] = useState<TracingLevel>(allLevels[0]);
   const [showLevelSelector, setShowLevelSelector] = useState(false);
   const [currentStrokeNumber, setCurrentStrokeNumber] = useState(1);
+  const [soundEnabled, setSoundEnabledState] = useState(() => {
+    const saved = localStorage.getItem('soundEnabled');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
+
+  useEffect(() => {
+    setSoundEnabled(soundEnabled);
+    localStorage.setItem('soundEnabled', JSON.stringify(soundEnabled));
+  }, [soundEnabled]);
 
   const handleLevelChange = (level: TracingLevel) => {
     setCurrentLevel(level);
@@ -44,8 +54,21 @@ export default function TracingGame() {
     setShowLevelSelector(prev => !prev);
   };
 
+  const toggleSound = () => {
+    setSoundEnabledState((prev: boolean) => !prev);
+  };
+
   return (
     <div className="tracing-game-container">
+      <button
+        className="sound-toggle-button"
+        onClick={toggleSound}
+        title={soundEnabled ? 'Tắt âm thanh' : 'Bật âm thanh'}
+        aria-label={soundEnabled ? 'Tắt âm thanh' : 'Bật âm thanh'}
+      >
+        {soundEnabled ? '🔊' : '🔇'}
+      </button>
+
       <UserHeader user={currentUser} />
 
       <Navigation
