@@ -323,6 +323,26 @@ export default function TracingBoard({
         )}
       </svg>
 
+      {showSuccessOverlay && (
+        <div className="confetti-overlay" aria-hidden="true">
+          <span className="confetti-piece star yellow" style={{ left: '16%', top: '18%', width: '18px', height: '18px', animationDelay: '0s' }} />
+          <span className="confetti-piece heart pink" style={{ left: '42%', top: '12%', width: '22px', height: '22px', animationDelay: '0.1s' }} />
+          <span className="confetti-piece circle mint" style={{ left: '68%', top: '16%', width: '16px', height: '16px', animationDelay: '0.2s' }} />
+          <span className="confetti-piece star orange" style={{ left: '22%', top: '52%', width: '20px', height: '20px', animationDelay: '0.25s' }} />
+          <span className="confetti-piece circle purple" style={{ left: '52%', top: '48%', width: '14px', height: '14px', animationDelay: '0.3s' }} />
+          <span className="confetti-piece heart yellow" style={{ left: '78%', top: '50%', width: '24px', height: '24px', animationDelay: '0.15s' }} />
+          <span className="confetti-piece circle pink" style={{ left: '30%', top: '76%', width: '18px', height: '18px', animationDelay: '0.35s' }} />
+          <span className="confetti-piece star mint" style={{ left: '62%', top: '72%', width: '16px', height: '16px', animationDelay: '0.4s' }} />
+          <span className="confetti-piece heart orange" style={{ left: '10%', top: '30%', width: '20px', height: '20px', animationDelay: '0.05s' }} />
+          <span className="confetti-piece circle yellow" style={{ left: '85%', top: '25%', width: '22px', height: '22px', animationDelay: '0.45s' }} />
+          <span className="confetti-piece star purple" style={{ left: '35%', top: '85%', width: '18px', height: '18px', animationDelay: '0.5s' }} />
+          <span className="confetti-piece heart mint" style={{ left: '70%', top: '80%', width: '16px', height: '16px', animationDelay: '0.55s' }} />
+          <span className="confetti-piece circle orange" style={{ left: '5%', top: '60%', width: '20px', height: '20px', animationDelay: '0.6s' }} />
+          <span className="confetti-piece star pink" style={{ left: '90%', top: '70%', width: '14px', height: '14px', animationDelay: '0.65s' }} />
+          <span className="confetti-piece heart purple" style={{ left: '50%', top: '5%', width: '26px', height: '26px', animationDelay: '0.7s' }} />
+        </div>
+      )}
+
       <div className="board-hint">{hint}</div>
 
       <div className="board-controls">

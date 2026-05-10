@@ -1,4 +1,5 @@
 .tracing-board {
+  position: relative;
   width: min(94vw, 520px);
   height: calc(100svh - 140px);
   min-height: 0;
@@ -46,6 +47,91 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   cursor: crosshair;
   display: block;
+}
+
+.confetti-overlay {
+  position: absolute;
+  top: 10px;
+  left: 8px;
+  width: min(92vw, 500px);
+  height: clamp(280px, 50svh, 390px);
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 30;
+}
+
+.confetti-piece {
+  position: absolute;
+  opacity: 0;
+  animation: confettiFloat 1.5s ease-out forwards;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.confetti-piece.circle {
+  border-radius: 50%;
+  background: #ffd166;
+}
+
+.confetti-piece.star {
+  background: #f25f5c;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.confetti-piece.heart {
+  background: #9d4edd;
+  transform: rotate(-45deg);
+  border-radius: 3px;
+  position: relative;
+}
+
+.confetti-piece.heart::before,
+.confetti-piece.heart::after {
+  content: '';
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+
+.confetti-piece.heart::before {
+  top: -50%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.confetti-piece.heart::after {
+  top: 0;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+}
+
+.confetti-piece.yellow { background: #ffd700; }
+.confetti-piece.pink { background: #ff69b4; }
+.confetti-piece.purple { background: #9d4edd; }
+.confetti-piece.mint { background: #00ffcc; }
+.confetti-piece.orange { background: #ff8c00; }
+
+@keyframes confettiFloat {
+  0% {
+    transform: translateY(0) scale(0.8) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.9;
+    transform: translateY(-10px) scale(1) rotate(10deg);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.1) rotate(-5deg);
+  }
+  80% {
+    opacity: 0.9;
+    transform: translateY(-25px) scale(1) rotate(5deg);
+  }
+  100% {
+    transform: translateY(-30px) scale(0.9) rotate(0deg);
+    opacity: 0;
+  }
 }
 
 .board-controls {
