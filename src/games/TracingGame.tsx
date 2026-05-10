@@ -4,7 +4,7 @@ import Navigation from '../components/Navigation';
 import LevelSelector from '../components/LevelSelector';
 import TracingBoard from '../components/TracingBoard';
 import type { TracingLevel } from '../levels';
-import { allLevels, getNextLevel } from '../levels';
+import { allLevels, getNextLevel, getLevelsByCategory } from '../levels';
 import { setSoundEnabled } from '../utils/audioManager';
 import './TracingGame.css';
 
@@ -16,6 +16,7 @@ const currentUser = {
 export default function TracingGame() {
   const [currentLevel, setCurrentLevel] = useState<TracingLevel>(allLevels[0]);
   const [showLevelSelector, setShowLevelSelector] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [currentStrokeNumber, setCurrentStrokeNumber] = useState(1);
   const [mascotState, setMascotState] = useState<'idle' | 'thinking' | 'happy' | 'cheering' | 'retry'>('idle');
   const [encouragementMessage, setEncouragementMessage] = useState('Thử lại nhé!');
@@ -116,6 +117,27 @@ export default function TracingGame() {
   const toggleLevelSelector = () => {
     setShowLevelSelector(prev => !prev);
   };
+
+  const handleCategorySelect = (category: string) => {
+    const levels = getLevelsByCategory(category);
+    if (levels.length > 0) {
+      setSelectedCategory(category);
+      setCurrentLevel(levels[0]);
+      setCurrentStrokeNumber(1);
+    }
+  };
+
+  const handleBackToWorldMap = () => {
+    setSelectedCategory(null);
+  };
+
+  const zones = [
+    { id: 'basic', icon: '✏️', label: 'Vườn nét' },
+    { id: 'numbers', icon: '🔢', label: 'Thành phố số' },
+    { id: 'letters', icon: '🔤', label: 'Rừng chữ' },
+    { id: 'shapes', icon: '🎨', label: 'Xưởng hình' },
+    { id: 'objects', icon: '🏠', label: 'Thế giới vật' }
+  ];
 
   const toggleStickerCollection = () => {
     setShowStickerCollection(prev => !prev);
@@ -541,6 +563,157 @@ export default function TracingGame() {
             opacity: 1;
           }
         }
+
+        .world-map-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 20px;
+          padding: 20px;
+          width: 100%;
+          flex: 1;
+          overflow-y: auto;
+        }
+
+        .world-map-title {
+          font-size: clamp(1.8rem, 5vw, 2.5rem);
+          color: #333;
+          margin: 0;
+          text-align: center;
+        }
+
+        .zones-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+          gap: 16px;
+          padding: 0 8px;
+          max-width: 600px;
+          width: 100%;
+        }
+
+        .zone-card {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          padding: 20px;
+          border: none;
+          border-radius: 16px;
+          background: linear-gradient(135deg, #ffd4e5 0%, #ffb7d9 100%);
+          cursor: pointer;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          font-family: Arial, sans-serif;
+          min-height: 140px;
+        }
+
+        .zone-card:nth-child(2) {
+          background: linear-gradient(135deg, #ffe5b4 0%, #ffd999 100%);
+        }
+
+        .zone-card:nth-child(3) {
+          background: linear-gradient(135deg, #d4f1ff 0%, #b7e1ff 100%);
+        }
+
+        .zone-card:nth-child(4) {
+          background: linear-gradient(135deg, #e5d4ff 0%, #d9b7ff 100%);
+        }
+
+        .zone-card:nth-child(5) {
+          background: linear-gradient(135deg, #d4ffe5 0%, #b7ffc9 100%);
+        }
+
+        .zone-card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .zone-card:active {
+          transform: translateY(-4px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .zone-icon {
+          font-size: 3.5rem;
+          animation: zoneIconFloat 2s ease-in-out infinite;
+        }
+
+        .zone-card:nth-child(2) .zone-icon {
+          animation-delay: 0.2s;
+        }
+
+        .zone-card:nth-child(3) .zone-icon {
+          animation-delay: 0.4s;
+        }
+
+        .zone-card:nth-child(4) .zone-icon {
+          animation-delay: 0.6s;
+        }
+
+        .zone-card:nth-child(5) .zone-icon {
+          animation-delay: 0.8s;
+        }
+
+        .zone-label {
+          font-size: clamp(1rem, 2.5vw, 1.2rem);
+          font-weight: bold;
+          color: #333;
+          text-align: center;
+          word-break: break-word;
+        }
+
+        @keyframes zoneIconFloat {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-8px);
+          }
+        }
+
+        .back-to-map-button {
+          font-size: 0.95rem;
+          font-weight: bold;
+          padding: 8px 16px;
+          border: none;
+          border-radius: 20px;
+          background: rgba(0, 0, 0, 0.1);
+          color: #333;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .back-to-map-button:hover {
+          background: rgba(0, 0, 0, 0.15);
+          transform: scale(1.05);
+        }
+
+        @media (max-width: 600px) {
+          .zones-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 0 4px;
+          }
+
+          .zone-card {
+            padding: 16px;
+            min-height: 120px;
+            gap: 8px;
+          }
+
+          .zone-icon {
+            font-size: 2.8rem;
+          }
+
+          .zone-label {
+            font-size: 0.9rem;
+          }
+
+          .world-map-title {
+            font-size: 1.6rem;
+          }
+        }
       `}</style>
 
       <button
@@ -602,6 +775,26 @@ export default function TracingGame() {
         onLevelChange={handleLevelChange}
       />
 
+      {selectedCategory === null && (
+        <div className="world-map-container">
+          <h1 className="world-map-title">🌍 Bản đồ Thế giới</h1>
+          <div className="zones-grid">
+            {zones.map(zone => (
+              <button
+                key={zone.id}
+                className="zone-card"
+                onClick={() => handleCategorySelect(zone.id)}
+                aria-label={zone.label}
+              >
+                <div className="zone-icon">{zone.icon}</div>
+                <div className="zone-label">{zone.label}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {selectedCategory !== null && <>
       <div className="title-row">
         <div className="game-title-wrapper">
           <h1 className="game-title">🎨 Trò chơi vẽ nét</h1>
@@ -644,7 +837,13 @@ export default function TracingGame() {
         <button onClick={toggleLevelSelector} className="level-select-button">
           {showLevelSelector ? '🔽 Ẩn danh sách' : '🔼 Chọn bài'}
         </button>
+        {selectedCategory !== null && (
+          <button onClick={handleBackToWorldMap} className="back-to-map-button">
+            🌍 Quay lại
+          </button>
+        )}
       </div>
+      </>}
     </div>
   );
 }
