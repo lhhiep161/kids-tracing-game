@@ -97,6 +97,15 @@ export default function TracingGame() {
     setSoundEnabledState((prev: boolean) => !prev);
   };
 
+  const mascotImageSrc =
+    mascotState === 'happy'
+      ? '/mascot/pencil-happy.svg'
+      : mascotState === 'retry'
+      ? '/mascot/pencil-retry.svg'
+      : mascotState === 'cheering'
+      ? '/mascot/pencil-cheering.svg'
+      : '/mascot/pencil-idle.svg';
+
   return (
     <div className="tracing-game-container">
       <style>{`
@@ -144,27 +153,24 @@ export default function TracingGame() {
 
         .mascot-card {
           position: relative;
-          width: 84px;
-          min-width: 84px;
-          height: 92px;
+          width: 96px;
+          min-width: 96px;
+          height: 96px;
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          padding: 8px;
+          padding: 4px;
           border-radius: 28px;
           background: linear-gradient(180deg, #fff7e6 0%, #fde1a3 100%);
           border: 1px solid rgba(243, 156, 18, 0.2);
           box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08);
-          animation: none;
+          overflow: hidden;
         }
 
-        .mascot-card.idle {
-          animation: none;
-        }
-
+        .mascot-card.idle,
         .mascot-card.thinking {
-          animation: mascotPulse 2s ease-in-out infinite;
+          animation: mascotFloat 4s ease-in-out infinite;
         }
 
         .mascot-card.happy {
@@ -172,11 +178,18 @@ export default function TracingGame() {
         }
 
         .mascot-card.retry {
-          animation: mascotShake 0.5s ease;
+          animation: mascotShake 0.45s ease;
         }
 
         .mascot-card.cheering {
-          animation: mascotSparkle 1.5s ease-in-out infinite;
+          animation: mascotSparkle 1.6s ease-in-out infinite;
+        }
+
+        .mascot-image {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          display: block;
         }
 
         .mascot-speech {
@@ -208,152 +221,14 @@ export default function TracingGame() {
           border-top: 8px solid rgba(255, 255, 255, 0.95);
         }
 
-        .mascot-card.cheering .mascot-face::before,
-        .mascot-card.cheering .mascot-face::after {
-          content: '';
-          position: absolute;
-          width: 8px;
-          height: 8px;
-          background: radial-gradient(circle, #fff 20%, #f1c40f 100%);
-          border-radius: 50%;
-          box-shadow: 0 0 8px rgba(241, 196, 15, 0.6);
-        }
-
-        .mascot-card.cheering .mascot-face::before {
-          top: -8px;
-          left: 6px;
-        }
-
-        .mascot-card.cheering .mascot-face::after {
-          top: 4px;
-          right: -10px;
-        }
-
-        .mascot-card.happy .mascot-mouth {
-          width: 22px;
-          height: 10px;
-          bottom: 12px;
-          border-radius: 0 0 999px 999px;
-          background: #e66f46;
-        }
-
-        .mascot-card.retry .mascot-mouth {
-          width: 16px;
-          height: 6px;
-          bottom: 16px;
-          background: #e66f46;
-          transform: rotate(180deg);
-        }
-
-        .mascot-card.cheering .mascot-mouth {
-          width: 18px;
-          height: 10px;
-          bottom: 10px;
-          border-radius: 0 0 999px 999px;
-          background: #e74c3c;
-        }
-
-        .mascot-card.thinking .mascot-mouth {
-          width: 10px;
-          height: 4px;
-          bottom: 16px;
-          border-radius: 999px;
-          background: #7f5f2c;
-        }
-
-        .mascot-card.retry .mascot-eye,
-        .mascot-card.cheering .mascot-eye {
-          transform: scale(1.05);
-        }
-
-        .mascot-card.thinking .mascot-face {
-          box-shadow: inset 0 0 0 1px rgba(242, 169, 0, 0.15);
-        }
-
-        .mascot-face {
-          position: relative;
-          width: 52px;
-          height: 52px;
-          border-radius: 50%;
-          background: #ffe3b6;
-          border: 2px solid #f1b86a;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .mascot-eye {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: #4d4d4d;
-          position: absolute;
-          top: 18px;
-        }
-
-        .mascot-eye.left {
-          left: 13px;
-        }
-
-        .mascot-eye.right {
-          right: 13px;
-        }
-
-        .mascot-mouth {
-          position: absolute;
-          bottom: 14px;
-          width: 18px;
-          height: 8px;
-          border-radius: 999px;
-          background: #e66f46;
-        }
-
-        .mascot-cheek {
-          position: absolute;
-          left: 12px;
-          bottom: 18px;
-          width: 10px;
-          height: 6px;
-          border-radius: 999px;
-          background: rgba(230, 118, 82, 0.35);
-        }
-
-        .mascot-pencil {
-          margin-top: 8px;
-          width: 26px;
-          height: 28px;
-          position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .pencil-body {
-          width: 14px;
-          height: 18px;
-          background: #f39c12;
-          border-radius: 6px;
-          position: absolute;
-          top: 0;
-        }
-
-        .pencil-tip {
-          position: absolute;
-          bottom: -6px;
-          width: 0;
-          height: 0;
-          border-left: 8px solid transparent;
-          border-right: 8px solid transparent;
-          border-top: 10px solid #d35400;
-        }
-
-        .pencil-band {
-          position: absolute;
-          top: 6px;
-          width: 16px;
-          height: 4px;
-          background: #f1c40f;
-          border-radius: 2px;
+        @keyframes mascotFloat {
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-4px);
+          }
         }
 
         @keyframes mascotHappy {
@@ -416,7 +291,7 @@ export default function TracingGame() {
 
           .mascot-card {
             width: 72px;
-            height: 80px;
+            height: 72px;
           }
 
           .encouragement-panel {
@@ -451,18 +326,16 @@ export default function TracingGame() {
         </div>
 
         <div className={`mascot-card ${mascotState}`} aria-hidden="true">
-          <div className="mascot-speech">{mascotState === 'retry' ? 'Thử lại nhé!' : mascotState === 'happy' ? 'Giỏi lắm!' : mascotState === 'cheering' ? 'Hoàn thành rồi!' : 'Bắt đầu nào!'}</div>
-          <div className="mascot-face">
-            <div className="mascot-eye left" />
-            <div className="mascot-eye right" />
-            <div className="mascot-mouth" />
-            <div className="mascot-cheek" />
+          <div className="mascot-speech">
+            {mascotState === 'retry'
+              ? 'Thử lại nhé!'
+              : mascotState === 'happy'
+              ? 'Giỏi lắm!'
+              : mascotState === 'cheering'
+              ? 'Hoàn thành rồi!'
+              : 'Bắt đầu nào!'}
           </div>
-          <div className="mascot-pencil">
-            <div className="pencil-body" />
-            <div className="pencil-tip" />
-            <div className="pencil-band" />
-          </div>
+          <img className="mascot-image" src={mascotImageSrc} alt="" />
         </div>
       </div>
 

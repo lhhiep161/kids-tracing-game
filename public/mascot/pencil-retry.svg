@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" role="img">
+  <defs>
+    <linearGradient id="retryBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f7d96f"/>
+      <stop offset="100%" stop-color="#e9a823"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(70 20)">
+    <rect x="-18" y="0" width="36" height="80" rx="18" fill="url(#retryBody)"/>
+    <rect x="-18" y="80" width="36" height="20" rx="10" fill="#e74c3c"/>
+    <rect x="-18" y="76" width="36" height="10" fill="#fff" opacity="0.75"/>
+    <path d="M -18 0 L 0 -22 L 18 0 Z" fill="#efc84f"/>
+    <path d="M -14 2 Q 0 -14 14 2" fill="#ffe6bd"/>
+    <ellipse cx="-9" cy="30" rx="5" ry="6" fill="#262626"/>
+    <ellipse cx="9" cy="30" rx="5" ry="6" fill="#262626"/>
+    <path d="M -10 44 C -6 38 6 38 10 44" stroke="#ba4a31" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M -24 20 Q -38 28 -34 42" stroke="#f4c150" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path d="M 24 20 Q 38 28 34 42" stroke="#f4c150" stroke-width="6" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>
